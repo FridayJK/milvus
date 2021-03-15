@@ -23,6 +23,7 @@
 #include "knowhere/index/vector_index/IndexIVFSQ.h"
 #include "knowhere/index/vector_index/IndexNSG.h"
 #include "knowhere/index/vector_index/IndexSPTAG.h"
+#include "knowhere/index/vector_index/IndexSMFR.h"
 
 #ifdef MILVUS_FPGA_VERSION
 #include "knowhere/index/vector_index/fpga/IndexFPGAIVFPQ.h"
@@ -90,7 +91,10 @@ VecIndexFactory::CreateVecIndex(const IndexType& type, const IndexMode mode) {
         return std::make_shared<knowhere::IndexHNSW>();
     } else if (type == IndexEnum::INDEX_ANNOY) {
         return std::make_shared<knowhere::IndexAnnoy>();
-    } else {
+    } else if (type == IndexEnum::INDEX_SMFR_INT8) {
+        return std::make_shared<knowhere::SMFRInt8>();
+    }
+    else {
         return nullptr;
     }
 }

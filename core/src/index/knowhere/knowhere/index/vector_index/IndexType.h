@@ -37,6 +37,8 @@ enum class OldIndexType {
     ANNOY,
     FAISS_BIN_IDMAP = 100,
     FAISS_BIN_IVFLAT_CPU = 101,
+
+    SMFR_INT8_CPU,
 };
 
 using IndexType = std::string;
@@ -56,6 +58,8 @@ extern const char* INDEX_SPTAG_KDT_RNT;
 extern const char* INDEX_SPTAG_BKT_RNT;
 extern const char* INDEX_HNSW;
 extern const char* INDEX_ANNOY;
+
+extern const char* INDEX_SMFR_INT8;
 }  // namespace IndexEnum
 
 enum class IndexMode { MODE_CPU = 0, MODE_GPU = 1, MODE_FPGA = 2 };

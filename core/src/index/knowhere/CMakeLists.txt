@@ -40,6 +40,7 @@ set(index_srcs
         knowhere/index/vector_index/ConfAdapterMgr.cpp
         knowhere/index/vector_index/FaissBaseBinaryIndex.cpp
         knowhere/index/vector_index/FaissBaseIndex.cpp
+        knowhere/index/vector_index/SMFRBaseIndex.cpp
         knowhere/index/vector_index/IndexBinaryIDMAP.cpp
         knowhere/index/vector_index/IndexBinaryIVF.cpp
         knowhere/index/vector_index/IndexHNSW.cpp
@@ -52,6 +53,7 @@ set(index_srcs
         knowhere/index/vector_index/IndexType.cpp
         knowhere/index/vector_index/VecIndexFactory.cpp
         knowhere/index/vector_index/IndexAnnoy.cpp
+        knowhere/index/vector_index/IndexSMFR.cpp
         )
 
 set(depend_libs

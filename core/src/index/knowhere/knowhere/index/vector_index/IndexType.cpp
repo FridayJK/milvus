@@ -53,6 +53,8 @@ static std::unordered_map<std::string, int32_t> str_old_index_type_map = {
     {IndexEnum::INDEX_ANNOY, (int32_t)OldIndexType::ANNOY},
     {IndexEnum::INDEX_FAISS_BIN_IDMAP, (int32_t)OldIndexType::FAISS_BIN_IDMAP},
     {IndexEnum::INDEX_FAISS_BIN_IVFFLAT, (int32_t)OldIndexType::FAISS_BIN_IVFLAT_CPU},
+
+    {IndexEnum::INDEX_SMFR_INT8, (int32_t)OldIndexType::SMFR_INT8_CPU},
 };
 
 /* used in 0.8.0 */
@@ -71,7 +73,7 @@ const char* INDEX_SPTAG_BKT_RNT = "SPTAG_BKT_RNT";
 const char* INDEX_HNSW = "HNSW";
 const char* INDEX_ANNOY = "ANNOY";
 
-const char* INDEX_SMAI = "SMAI"
+const char* INDEX_SMFR_INT8 = "SMFR_INT8";
 }  // namespace IndexEnum
 
 std::string
