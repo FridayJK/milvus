@@ -26,13 +26,29 @@ SMFRBaseIndex::SerializeImpl(const IndexType& type) {
         fiu_do_on("SMFRBaseIndex.SerializeImpl.throw_exception", throw std::exception());
         SMFeatRetrieval* index_smfr = index_.get();
 
-        MemoryIOWriter writer;
-        // faiss::write_index(index, &writer);
-        std::shared_ptr<uint8_t[]> data(writer.data_);
+        SMFRRunTimeInfo runTimeInfo;
+        SMFRIOMem       ioMem;
+
+        index_smfr->SMFRGetRunTimeInfo(runTimeInfo);
+
+        std::shared_ptr<uint8_t[]> dim_data(new uint8_t[sizeof(int)]);
+        // std::shared_ptr<uint8_t[]> n_base(new uint8_t[sizeof(uint64_t)]);
+        std::shared_ptr<uint8_t[]> index_data(new uint8_t[runTimeInfo.n_base]);
+
+        memcpy(dim_data.get(), &runTimeInfo.n_dims, sizeof(int));
+        // memcpy(n_base.get(), &runTimeInfo.n_base, sizeof(uint64_t));
+        ioMem.data = index_data.get();
+        index_smfr->SMFRIOSerialize(ioMem);
+
+        int64_t index_length = ioMem.total*runTimeInfo.n_dims;
+        //check ioMem.total==runTimeInfo.n_base
 
         BinarySet res_set;
-        // TODO(linxj): use virtual func Name() instead of raw string.
-        res_set.Append("IVF", data, writer.rp);
+        
+        res_set.Append("smfr_dim", dim_data, sizeof(int));
+        // res_set.Append("smfr_nbase", n_base, sizeof(uint64_t));
+        res_set.Append("smfr_int8", index_data, index_length);
+
         return res_set;
     } catch (std::exception& e) {
         KNOWHERE_THROW_MSG(e.what());
@@ -41,14 +57,22 @@ SMFRBaseIndex::SerializeImpl(const IndexType& type) {
 
 void
 SMFRBaseIndex::LoadImpl(const BinarySet& binary_set, const IndexType& type) {
-    auto binary = binary_set.GetByName("IVF");
+    uint8_t         *index_data;
+    uint64_t        index_length;
+    int             dim;
 
-    MemoryIOReader reader;
-    reader.total = binary->size;
-    reader.data_ = binary->data.get();
+    auto BinarySet_Dim = binary_set.GetByName("smfr_dim");
+    auto BinarySet_index = binary_set.GetByName("smfr_int8");
 
-    // faiss::Index* index = faiss::read_index(&reader);
-    // index_.reset(index);
+    // dim = *(int)BinarySet_Dim->data.get();
+    memcpy(&dim, BinarySet_Dim->data.get(), sizeof(int));
+    index_length = BinarySet_index->size;
+    index_data = BinarySet_index->data.get();
+
+    SMFeatRetrieval *index = new SMFeatRetrieval(SM_BRUTE_FORCE_INT8, dim, SMFR_CPU);//
+    index->SMFRLoadIndex((void*)index_data, dim, index_length);
+
+    index_.reset(index);
 
     SealImpl();
 }

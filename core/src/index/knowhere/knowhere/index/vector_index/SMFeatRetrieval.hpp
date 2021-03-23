@@ -30,6 +30,12 @@ typedef struct __SMFRVersionInfo__{
     int date;
 }SMFRVersionInfo;
 
+//内存序列化信息
+typedef struct __SMFRIOMem__{
+    uint8_t  *data;
+    uint64_t total;
+}SMFRIOMem;
+
 //配置信息
 typedef struct __SMFRConfig__{
     int  distance_type; //计算距离类型L2、cos
@@ -48,7 +54,7 @@ typedef struct __SMFRRunTimeInfo__{
     SMFR_DEVICE_MODE  device_type;      //设备类型
     SMFR_INDEX_TYPES  index_type;       //索引类型
     std::string       index_key;        //索引字符配置
-    int               n_base;           //底库数量
+    uint64_t          n_base;           //底库数量
     int               n_dims;           //特征维度
     int               distance_type;    //距离类型
     int               n_probe = 10;     //查询分片个数
@@ -83,9 +89,27 @@ class SMFeatRetrieval{
     /*删除已被置0的数据*/
     int SMFRRemoveIDs();
 
+    //序列化内存
+    int SMFRIOSerialize(SMFRIOMem &ioMem);
+
+    /*存盘
+    saveIndexPath       -I      存储位置
+    */
+    int SMFRSaveIndex(std::string saveIndexPath);
+
+    /*加载存盘的index
+    loadIndexPath       -I      加载位置
+    */
+    int SMFRLoadIndex(std::string loadIndexPath);
+
+    /*加载序列化index
+    *data               -I      index数据指针
+    dim                 -I      数据维度
+    length              -I      数据总长度
+    */
+    int SMFRLoadIndex(void* data, int dim, uint64_t length);
+
     // int SMFRTrainIndex(const std::vector <float> &trainData);
-    // int SMFRSaveIndex(std::string saveIndexPath);
-    // int SMFRLoadIndex(std::string loadIndexPath);
     // int SMFRAddWithIDs();
     // int SMFRRemoveWithIDs();
 
@@ -101,7 +125,7 @@ class SMFeatRetrieval{
     private:
     SMFRVersionInfo      modelVersionInfo;//
     SMFRRunTimeInfo      runTimeInfo_;
-    void                 *smfr_handlde;
+    void                 *smfr_handle;
 };
 
 class SMFRFeatUpdate{
