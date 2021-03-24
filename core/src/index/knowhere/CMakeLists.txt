@@ -62,6 +62,7 @@ set(depend_libs
         gomp
         gfortran
         pthread
+        smfr
         )
 if (FAISS_WITH_MKL)
     set(depend_libs ${depend_libs}
@@ -127,7 +128,7 @@ target_link_libraries(
         knowhere
         ${depend_libs}
 )
-
+#target_link_directories(knowhere PUBLIC "${SMFR_PREFIX}")
 set(INDEX_INCLUDE_DIRS
         ${INDEX_SOURCE_DIR}/knowhere
         ${INDEX_SOURCE_DIR}/thirdparty

@@ -15,7 +15,7 @@
 #include <utility>
 
 // #include <faiss/Index.h>
-#include "knowhere/index/vector_index/SMFeatRetrieval.hpp"
+#include "SMFeatRetrieval.hpp"
 
 #include "knowhere/common/BinarySet.h"
 #include "knowhere/index/vector_index/IndexType.h"

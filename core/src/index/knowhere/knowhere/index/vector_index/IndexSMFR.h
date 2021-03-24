@@ -7,7 +7,7 @@
 #include "knowhere/common/Log.h"
 #include "knowhere/index/vector_index/SMFRBaseIndex.h"
 #include "knowhere/index/vector_index/VecIndex.h"
-#include "knowhere/index/vector_index/SMFeatRetrieval.hpp"
+#include "SMFeatRetrieval.hpp"
 
 namespace milvus {
 namespace knowhere {

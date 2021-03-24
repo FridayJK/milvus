@@ -15,6 +15,7 @@ set(KNOWHERE_THIRDPARTY_DEPENDENCIES
         GTest
         OpenBLAS
         MKL
+        SMFR
         )
 
 message(STATUS "Using ${KNOWHERE_DEPENDENCY_SOURCE} approach to find dependencies")
@@ -37,6 +38,8 @@ macro(build_dependency DEPENDENCY_NAME)
         build_faiss()
     elseif ("${DEPENDENCY_NAME}" STREQUAL "MKL")
         build_mkl()
+    elseif ("${DEPENDENCY_NAME}" STREQUAL "SMFR")
+        build_smfr()
     else ()
         message(FATAL_ERROR "Unknown thirdparty dependency to build: ${DEPENDENCY_NAME}")
     endif ()
@@ -625,3 +628,16 @@ if (KNOWHERE_WITH_FAISS AND NOT TARGET faiss_ep)
     include_directories(SYSTEM "${FAISS_INCLUDE_DIR}")
     link_directories(SYSTEM ${FAISS_PREFIX}/lib/)
 endif ()
+
+
+# set(SMFR_INCLUDE_DIR "/root/github1/smfeatretrieval/src/smfr")
+# set(SMFR_PREFIX "/root/github1/smfeatretrieval/lib")
+# if (KNOWHERE_WITH_CPU_SMFR AND NOT TARGET smfr_ep)
+# if (KNOWHERE_WITH_CPU_SMFR)
+
+#     # get_target_property(FAISS_INCLUDE_DIR faiss INTERFACE_INCLUDE_DIRECTORIES)
+#     include_directories(SYSTEM "${SMFR_INCLUDE_DIR}")
+#     # link_directories(SYSTEM ${SMFR_PREFIX}/lib/)
+#     link_directories("${SMFR_PREFIX}")
+#     message(STATUS @@@@@${SMFR_PREFIX})
+# endif ()
